@@ -1,13 +1,19 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Random;
 
+import javax.swing.JButton;
 
-public class RunTime {
+
+public class RunTime  implements ActionListener {
 	Random rn;
+	static Boolean runBoolean=false;
 	static PriorityQueue<ScheduledSample> pq;
 	static ArrayList<Agent> agents;
 	int time;
+	JButton button;
 	public RunTime() {
 		time=0;
 		rn = new Random();
@@ -28,4 +34,26 @@ public class RunTime {
 			} else {/*System.out.println("Time is: "+time+" nothing happened");*/}
 		}
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		//	System.out.println(e);
+		//System.out.println(agents);
+		//*	System.out.println(pq);*/
+		if (runBoolean==true) {
+			runBoolean=false;
+		
+			button.setText("Play");
+
+		} else {
+			runBoolean=true;
+			button.setText("Pause");
+			PausePlayClass worker = new PausePlayClass(this);
+			worker.execute();
+		}
+
+
+	}
+
 }
