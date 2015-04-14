@@ -14,6 +14,7 @@ public class RunTime  implements ActionListener {
 	static ArrayList<Agent> agents;
 	int time;
 	JButton button;
+	GUI gui;
 	public RunTime() {
 		time=0;
 		rn = new Random();
@@ -44,11 +45,11 @@ public class RunTime  implements ActionListener {
 		if (runBoolean==true) {
 			runBoolean=false;
 		
-			button.setText("Play");
+			gui.button.setText("Play");
 
 		} else {
 			runBoolean=true;
-			button.setText("Pause");
+			gui.button.setText("Pause");
 			PausePlayClass worker = new PausePlayClass(this);
 			worker.execute();
 		}

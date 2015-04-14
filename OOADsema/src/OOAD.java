@@ -12,20 +12,10 @@ public class OOAD {
 	static PriorityQueue<ScheduledSample> pq = new PriorityQueue();
 	public static void main(String[] args) 
 	{
-		JFrame frame = new JFrame("Run Time");
-
-		JButton button = new JButton("Play");
-
-		frame.add(button);
-		JLabel label = new JLabel("---");
-		frame.setSize(800,600);
-		frame.setVisible( true );
-		
 		System.out.println("hi");
 		RunTime rt = new RunTime();
 		Buffer buff = new Buffer(1000);
-		button.addActionListener(rt);
-		rt.button=button;
+
 			Writer writer = new Writer("Hello everyone our ",buff,0,rt);
 			agents.add(writer);
 			pq.add(new ScheduledSample(writer,0));
@@ -39,9 +29,17 @@ public class OOAD {
 			pq.add(new ScheduledSample(reader,i));
 		}
 		agents.add(buff);
-
+		createGUI(rt);
 		rt.initRunTime(pq, agents);
 	//	rt.execute();
 		
 		}
+	public static void createGUI(RunTime rt){
+		rt.gui = new GUI();
+
+
+		rt.gui.button.addActionListener(rt);
+
+		
+	}
 }
