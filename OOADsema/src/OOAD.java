@@ -29,17 +29,18 @@ public class OOAD {
 			pq.add(new ScheduledSample(reader,i));
 		}
 		agents.add(buff);
-		createGUI(rt);
+		
 		rt.initRunTime(pq, agents);
+		createGUI(rt);
 	//	rt.execute();
 		
 		}
 	public static void createGUI(RunTime rt){
-		rt.gui = new GUI();
-
-
-		rt.gui.button.addActionListener(rt);
-
+		rt.gui = new gui();
+		rt.gui.setVisible(true);
+		RunTimeView rtv = new RunTimeView(rt);
+		rt.gui.jButton1.addActionListener(rt);
+		rtv.repaint();
 		
 	}
 }

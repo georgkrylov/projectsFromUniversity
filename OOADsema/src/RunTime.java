@@ -14,7 +14,7 @@ public class RunTime  implements ActionListener {
 	static ArrayList<Agent> agents;
 	int time;
 	JButton button;
-	GUI gui;
+	gui gui;
 	public RunTime() {
 		time=0;
 		rn = new Random();
@@ -25,13 +25,19 @@ public class RunTime  implements ActionListener {
 		
 	}
 	public void execute(){
-		while (pq.size()!=0){
+		while (pq.size()!=0 ){
+			if (runBoolean==false) {continue;}
 			time++;
 			//System.out.println(pq.peek().getTimeOfEvent()+" "+Integer.toString(time));
 			if (time>=pq.peek().getTimeOfEvent()){
 				int i = rn.nextInt(20);
 				pq.poll().step(i);
-		
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else {/*System.out.println("Time is: "+time+" nothing happened");*/}
 		}
 	}
@@ -45,11 +51,11 @@ public class RunTime  implements ActionListener {
 		if (runBoolean==true) {
 			runBoolean=false;
 		
-			gui.button.setText("Play");
+		//	gui.button.setText("Play");
 
 		} else {
 			runBoolean=true;
-			gui.button.setText("Pause");
+			//gui.button.setText("Pause");
 			PausePlayClass worker = new PausePlayClass(this);
 			worker.execute();
 		}

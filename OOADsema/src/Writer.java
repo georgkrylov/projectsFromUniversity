@@ -27,4 +27,8 @@ public void step(int simTime,int i){
 	write();
 	if (pos<writerString.length()) rt.pq.add(new ScheduledSample(this,simTime+i));
 }
+public String jobLeft(){
+//	System.out.println(simTime+"  writer "+number+"writes");
+	return writerString.substring(pos, writerString.length());
+	}
 }
