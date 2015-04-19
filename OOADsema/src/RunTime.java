@@ -14,9 +14,7 @@ public class RunTime  implements ActionListener {
 	static ArrayList<Agent> agents;
 	int time;
 	int chpw = 1;
-	JButton button;
 	int speed = 500;
-	boolean restart=false;
 	gui gui;
 	RunTimeView rtv;
 	public int somethingtowrite;

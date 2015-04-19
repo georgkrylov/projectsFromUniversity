@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JLabel;
@@ -9,14 +8,10 @@ import javax.swing.text.Highlighter;
 
 
 public class RunTimeView {
-	static ArrayList<JLabel> readers;
-	static ArrayList<JLabel> writers;
 	static JLabel buffer;
 	RunTime rt;
 
 	public RunTimeView(RunTime rt) {
-		readers = new ArrayList();
-		writers = new ArrayList();
 		this.rt = rt;
 		Iterator it =  rt.agents.iterator();
 		int readerscount = -1;
