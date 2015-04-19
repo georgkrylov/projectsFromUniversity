@@ -1,10 +1,6 @@
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 
 public class OOAD {
 
@@ -15,13 +11,15 @@ public class OOAD {
 		System.out.println("hi");
 		RunTime rt = new RunTime();
 		Buffer buff = new Buffer(1000);
-
+		int Somethingtowrite=0;
 			Writer writer = new Writer("Hello everyone our ",buff,0,rt);
 			agents.add(writer);
+			Somethingtowrite++;
 			pq.add(new ScheduledSample(writer,0));
 
 			writer = new Writer("World is a brilliant thing!",buff,1,rt);
 			agents.add(writer);
+			Somethingtowrite++;
 			pq.add(new ScheduledSample(writer,1));
 		for (int i = 0; i<2;i++){
 			Reader reader = new Reader(buff,i,rt);
@@ -30,7 +28,7 @@ public class OOAD {
 		}
 		agents.add(buff);
 		
-		rt.initRunTime(pq, agents);
+		rt.initRunTime(pq, agents,Somethingtowrite);
 		createGUI(rt);
 	//	rt.execute();
 		
@@ -39,8 +37,13 @@ public class OOAD {
 		rt.gui = new gui();
 		rt.gui.setVisible(true);
 		RunTimeView rtv = new RunTimeView(rt);
-		rt.gui.jButton1.addActionListener(rt);
-		rtv.repaint();
+		rt.gui.jButton5.addActionListener(rt);
 		
+		rt.rtv =rtv;
+		rt.gui.jButton6.addActionListener(rt);
+		rt.gui.jButton2.addActionListener(rt);
+		rt.gui.jButton3.addActionListener(rt);
+		rt.gui.jButton8.addActionListener(rt);
+		rt.gui.jButton1.addActionListener(rt);
 	}
 }

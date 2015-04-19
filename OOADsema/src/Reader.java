@@ -11,12 +11,19 @@ String readerString;
 public void read(){
 	readerString=buffer.read();
 	
-	System.out.println("Reader "+number +":" + readerString);
+//	System.out.println("Reader "+number +":" + readerString);
 }
 @Override
 public void step(int simTime,int i){
 	read();
-	if (simTime < 250) rt.pq.add(new ScheduledSample(this,simTime+i));
+	try {
+		Thread.sleep(300);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	this.setInactive();
+	if (rt.somethingtowrite>0) rt.pq.add(new ScheduledSample(this,simTime+i));
 }
 }
 

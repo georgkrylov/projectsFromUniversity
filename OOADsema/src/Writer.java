@@ -18,14 +18,24 @@ private Buffer buffer;
 	 
  }
 public void write(){
+	for (int i =0;i<rt.chpw;i++){
+	if (pos==writerString.length()){break;}
 	buffer.append(this.writerString.charAt(pos));
-	pos++;
+	pos++;}
+	
 }
 
 public void step(int simTime,int i){
 //	System.out.println(simTime+"  writer "+number+"writes");
 	write();
-	if (pos<writerString.length()) rt.pq.add(new ScheduledSample(this,simTime+i));
+	try {
+		Thread.sleep(300);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	this.setInactive();
+	if (pos<writerString.length()) rt.pq.add(new ScheduledSample(this,simTime+i)); else rt.somethingtowrite--;
 }
 public String jobLeft(){
 //	System.out.println(simTime+"  writer "+number+"writes");
