@@ -1,3 +1,5 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Iterator;
 
 import javax.swing.JLabel;
@@ -7,37 +9,47 @@ import javax.swing.text.Highlighter;
 
 
 
-public class RunTimeView {
+public class RunTimeView implements ActionListener{
 	static JLabel buffer;
 	RunTime rt;
+	gui gui;
 
-	public RunTimeView(RunTime rt) {
+	public RunTimeView(RunTime rt,gui gui) {
 		this.rt = rt;
-		Iterator it =  rt.agents.iterator();
+		this.gui=gui;
+		rt.rtv=this;
+		prepare();
+	}
+	public void prepare(){
 		int readerscount = -1;
 		int writerscount = -1;
-		while (it.hasNext()){
-			Agent temp = (Agent) it.next();
-			if (temp.getClass()== Reader.class) {
-				readerscount++;
-				rt.gui.jTextArea1.setText(rt.gui.jTextArea1.getText()+"Reader "+ Integer.toString(readerscount)+"\n");
-			}
-			if (temp.getClass()== Writer.class) {
-				writerscount++;
-				rt.gui.jTextArea2.setText(rt.gui.jTextArea2.getText()+"Writer "+ Integer.toString(writerscount)+"\n");
-			}
-			if (temp.getClass()== Buffer.class) {
-				buffer = rt.gui.jLabel3;
-				Buffer bufferr = (Buffer)temp;
-				buffer.setText(bufferr.read());
+		gui.jTextArea1.setText("");
+		gui.jTextArea2.setText("");
+		
+		synchronized(rt.agents){
+			Iterator it =  rt.agents.iterator();
+			while (it.hasNext()){
+				Agent temp = (Agent) it.next();
+				if (temp.getClass()== Reader.class) {
+					readerscount++;
+					gui.jTextArea1.setText(gui.jTextArea1.getText()+"Reader "+ Integer.toString(readerscount)+"\n");
+				}
+				if (temp.getClass()== Writer.class) {
+					writerscount++;
+					gui.jTextArea2.setText(gui.jTextArea2.getText()+"Writer "+ Integer.toString(writerscount)+"\n");
+				}
+				if (temp.getClass()== Buffer.class) {
+					buffer = gui.jLabel3;
+					Buffer bufferr = (Buffer)temp;
+					buffer.setText(bufferr.read());
 
 
+				}
 			}
 		}
 	}
 	public void repaint(){
-		//	while (1==1){
-		rt.gui.jLabel9.setText(Integer.toString(rt.speed));
+		gui.jLabel9.setText(Integer.toString(rt.speed));
 		int readerHighlightStart=0;
 		int readerHighlightEnd=0;
 		int writerHighlightStart=0;
@@ -46,20 +58,20 @@ public class RunTimeView {
 			Iterator it =  rt.agents.iterator();
 			int readerscount = -1;
 			int writerscount = -1;
-			
-			rt.gui.jTextArea1.setText("");
-			rt.gui.jTextArea2.setText("");
-			rt.gui.jLabel13.setText(Integer.toString(rt.getTime()));
+
+			gui.jTextArea1.setText("");
+			gui.jTextArea2.setText("");
+			gui.jLabel13.setText(Integer.toString(rt.getTime()));
 			while (it.hasNext()){
 				Agent temp = (Agent) it.next();
 				if (temp.getClass()== Reader.class) {
 					readerscount++;
 					Reader readerr = (Reader)temp;
 
-					int sizeofArea = rt.gui.jTextArea1.getText().length();
+					int sizeofArea = gui.jTextArea1.getText().length();
 					String tempString ="Reader "+ Integer.toString(readerscount) +"\n"+readerr.readerString+"\n";
 					//	System.out.println(sizeofArea);
-					rt.gui.jTextArea1.setText(rt.gui.jTextArea1.getText()+tempString);
+					gui.jTextArea1.setText(gui.jTextArea1.getText()+tempString);
 					if (readerr.active) {
 						readerHighlightStart = sizeofArea;
 						readerHighlightEnd = sizeofArea+tempString.length();
@@ -68,49 +80,88 @@ public class RunTimeView {
 				if (temp.getClass()== Writer.class) {
 					writerscount++;
 					Writer writerr = (Writer)temp;
-					int sizeofArea = rt.gui.jTextArea2.getText().length();
+					int sizeofArea = gui.jTextArea2.getText().length();
 					String tempString = "Writer "+ Integer.toString(writerscount)+"\n"+writerr.jobLeft()+"\n";
-					rt.gui.jTextArea2.setText(rt.gui.jTextArea2.getText()+tempString);
+					gui.jTextArea2.setText(gui.jTextArea2.getText()+tempString);
 					if (writerr.active) {
 						writerHighlightStart=sizeofArea;
 						writerHiglightEnd=sizeofArea+tempString.length();
-						}
 					}
+				}
 				if (temp.getClass()== Buffer.class) {
-					buffer = rt.gui.jLabel3;
+					buffer = gui.jLabel3;
 					Buffer bufferr = (Buffer)temp;
 					buffer.setText(bufferr.read());
 
 
 				}
 			}
-		}
-		if (readerHighlightEnd-readerHighlightStart != 0){
-			Highlighter h =  rt.gui.jTextArea1.getHighlighter();
-			h.removeAllHighlights();
-			try {
-				h.addHighlight(readerHighlightStart ,
-						readerHighlightEnd,
-				               DefaultHighlighter.DefaultPainter);
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-		//		e.printStackTrace();
+
+			if (readerHighlightEnd-readerHighlightStart != 0){
+				Highlighter h =  gui.jTextArea1.getHighlighter();
+				h.removeAllHighlights();
+				try {
+					h.addHighlight(readerHighlightStart ,
+							readerHighlightEnd,
+							DefaultHighlighter.DefaultPainter);
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					//		e.printStackTrace();
+				}
+
 			}
-			
-		}
-		if (writerHiglightEnd-writerHighlightStart != 0){
-			Highlighter h =  rt.gui.jTextArea2.getHighlighter();
-			h.removeAllHighlights();
-			try {
-				h.addHighlight(writerHighlightStart ,
-						writerHiglightEnd,
-				               DefaultHighlighter.DefaultPainter);
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-		//		e.printStackTrace();
+			if (writerHiglightEnd-writerHighlightStart != 0){
+				Highlighter h =  gui.jTextArea2.getHighlighter();
+				h.removeAllHighlights();
+				try {
+					h.addHighlight(writerHighlightStart ,
+							writerHiglightEnd,
+							DefaultHighlighter.DefaultPainter);
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					//		e.printStackTrace();
+				}
+
 			}
-			
 		}
+
 	}
-	//}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if (e.getActionCommand()=="Step"){
+			if (rt.runBoolean==true) {
+				rt.runBoolean=false;
+				gui.jButton5.setText("Play");
+			} 
+			StepClass worker = new StepClass(rt);
+			worker.execute();
+		}
+		if (e.getActionCommand()=="Apply"){
+			if ((gui.jTextField1.getText().matches(".*\\d+.*"))){
+				int i = 1;
+				i = Integer.parseInt(gui.jTextField1.getText());
+				//	System.out.println(i);
+				rt.chpw = i;
+			}
+		}
+		if (e.getActionCommand()=="Speed up"){if (rt.speed>50){rt.speed-=50;}};
+		if (e.getActionCommand()=="Speed down"){rt.speed+=50;};
+		if (e.getActionCommand() == "Play" || e.getActionCommand() == "Pause" ){
+			if (rt.runBoolean==true) {
+				rt.runBoolean=false;
+
+				gui.jButton5.setText("Play");
+
+			} else {
+				rt.runBoolean=true;
+				gui.jButton5.setText("Pause");
+				PausePlayClass worker = new PausePlayClass(rt);
+				worker.execute();
+
+			}
+		}
+
+	}
 }

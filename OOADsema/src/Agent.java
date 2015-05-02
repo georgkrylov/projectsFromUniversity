@@ -12,4 +12,8 @@ public abstract class Agent {
 	public void setInactive(){
 		active = false;
 	}
+	public void step(int time) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -370,6 +370,9 @@ jTextArea3.setText(" The readers-writers problems deal with situations in which 
                     .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
+    	buttonGroup1.add(jRadioButton1);
+    	buttonGroup1.add(jRadioButton2);
+    	buttonGroup1.add(jRadioButton3);
         getAccessibleContext().setAccessibleDescription("");
 
         pack();

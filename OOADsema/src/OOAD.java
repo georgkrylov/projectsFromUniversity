@@ -1,49 +1,45 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 
 public class OOAD {
 
-	static ArrayList<Agent> agents =new ArrayList();
-	static PriorityQueue<ScheduledSample> pq = new PriorityQueue();
+	
 	public static void main(String[] args) 
 	{
-		System.out.println("hi");
-		RunTime rt = new RunTime();
-		Buffer buff = new Buffer(1000);
-		int Somethingtowrite=0;
-			Writer writer = new Writer("Hello everyone our ",buff,0,rt);
-			agents.add(writer);
-			Somethingtowrite++;
-			pq.add(new ScheduledSample(writer,0));
+		
 
-			writer = new Writer("World is a brilliant thing!",buff,1,rt);
-			agents.add(writer);
-			Somethingtowrite++;
-			pq.add(new ScheduledSample(writer,1));
-		for (int i = 0; i<2;i++){
-			Reader reader = new Reader(buff,i,rt);
-			agents.add(reader);
-			pq.add(new ScheduledSample(reader,i));
-		}
-		agents.add(buff);
 		
-		rt.initRunTime(pq, agents,Somethingtowrite);
-		createGUI(rt);
+		createGUI();
 	//	rt.execute();
+	/*	
+		*/
 		
 		}
-	public static void createGUI(RunTime rt){
-		rt.gui = new gui();
-		rt.gui.setVisible(true);
-		RunTimeView rtv = new RunTimeView(rt);
-		rt.gui.jButton5.addActionListener(rt);
-		
-		rt.rtv =rtv;
-		rt.gui.jButton6.addActionListener(rt);
-		rt.gui.jButton2.addActionListener(rt);
-		rt.gui.jButton3.addActionListener(rt);
-		rt.gui.jButton8.addActionListener(rt);
-		rt.gui.jButton1.addActionListener(rt);
+	public static void createGUI(){
+		final gui gui = new gui();
+	
+		gui.setVisible(true);
+		final Strategy executionStrategy =new Strategy(gui);
+		gui.jButton1.addActionListener( new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent ae) {
+	        	if (gui.jRadioButton1.isSelected()) {
+	        		executionStrategy.setStrategy(new NoStrategy());
+	        	}	
+	        	if (gui.jRadioButton2.isSelected()) {
+	        		executionStrategy.setStrategy(new FairStrategy());        		
+	        	}
+	        	if (gui.jRadioButton3.isSelected()) {
+	        		System.out.println(3);   		
+	        	}
+	        	executionStrategy.executeCurrentStrategy();
+	        }
+
+	    });
+	
 	}
+
 }

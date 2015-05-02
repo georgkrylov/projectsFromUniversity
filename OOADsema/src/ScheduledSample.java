@@ -17,6 +17,6 @@ public class ScheduledSample implements Comparable {
 	@Override
 	public int compareTo(Object o) {
 		ScheduledSample otherObject = (ScheduledSample) o;
-		return (this.time - otherObject.time);
+		return Math.min(this.time, otherObject.time);
 	}
 }
