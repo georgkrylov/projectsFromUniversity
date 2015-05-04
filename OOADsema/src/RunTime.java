@@ -33,7 +33,7 @@ public class RunTime extends AbstractRunTime {
 				time=pq.peek().getTimeOfEvent();
 				for (int i=0;i<4;i++)states[i]=0;
 				while (time>=pq.peek().getTimeOfEvent()){
-					int i = rn.nextInt(20);
+					int i = rn.nextInt(10)+1;
 					pq.peek().agent.setActive();
 					rtv.repaint();
 					pq.poll().step(i);

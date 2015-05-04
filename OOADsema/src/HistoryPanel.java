@@ -44,8 +44,8 @@ class HistoryPanel extends JPanel {
 		for (int i=0;i<currentTime;i++){
 			for (int j=0;j<4;j++){
 				g.setColor(colors[StateHistory[i][j]]);
-				g.drawRect(20*(i-1), offsety+20*(j), 20, 20);
-				g.fillRect(20*(i-1),offsety+20*(j), 20, 20);
+				g.drawRect(20*(i), offsety+20*(j), 20, 20);
+				g.fillRect(20*(i),offsety+20*(j), 20, 20);
 			}
 			g.setColor(Color.black);
 			g.drawString(Integer.toString(i), 20*(i-1),  5+20*(5+1));

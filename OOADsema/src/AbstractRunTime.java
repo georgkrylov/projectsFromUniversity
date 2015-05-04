@@ -18,9 +18,6 @@ abstract class AbstractRunTime {
 		return time;
 	}
 	public void passStates(){
-		System.out.println(time);
-		for (int i =0;i<4;i++){System.out.print(states[i]+" ");}
-		
 		gui.jPanel8.appendCurrentState(time,states);
 
 	}
