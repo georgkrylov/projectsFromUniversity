@@ -8,7 +8,7 @@ public class FairRunTime extends AbstractRunTime {
 	int readcount=0; // (initial value = 0)
 	Semaphore mutex_rdcnt, r, w; // ( initial value = 1 ) 
 	public FairRunTime() {
-		time=0;
+		time=-1;
 	}
 	public void initRunTime(ArrayList<Agent> agents, gui gui){
 		super.agents=agents;

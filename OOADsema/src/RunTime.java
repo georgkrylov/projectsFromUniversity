@@ -26,7 +26,7 @@ public class RunTime extends AbstractRunTime {
 	public void execute(){
 		synchronized(agents){
 
-			while (time<300 ){
+			while (pq.size()>0 ){
 			
 				if (runBoolean==false) {break;}
 				
@@ -37,14 +37,14 @@ public class RunTime extends AbstractRunTime {
 					pq.peek().agent.setActive();
 					rtv.repaint();
 					pq.poll().step(i);
-				
+
+					try {
+						Thread.sleep(speed);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				} 
 
-				try {
-					Thread.sleep(speed);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				StateClass st = new StateClass(this);
 
 				st.execute();
@@ -57,20 +57,25 @@ public class RunTime extends AbstractRunTime {
 
 		if (pq.size()!=0 ){
 			time = pq.peek().getTimeOfEvent();
-			int i = rn.nextInt(20);
-			pq.peek().agent.setActive();
-			rtv.repaint();
-			pq.poll().step(i);
-			try {
-				Thread.sleep(speed);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		} else {	for (int i=0;i<3;i++)states[i]=3;}
+			for (int i=0;i<4;i++)states[i]=0;
+			while(time>=pq.peek().getTimeOfEvent()){
+				int i = rn.nextInt(20);
+				pq.peek().agent.setActive();
+				rtv.repaint();
+				pq.poll().step(i);
+
+				try {
+					Thread.sleep(speed);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				rtv.repaint();
+		} 
+			
 		StateClass st = new StateClass(this);
 		st.execute();
 		rtv.repaint();
-
+		}
 	}
 
 
