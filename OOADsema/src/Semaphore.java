@@ -10,17 +10,14 @@ public class Semaphore {
 		this.name=name;
 	}
 	public int wait( String id){
-     	System.out.println(rt.time + ": resource "+name+" is accessed by " +id + "and has value of"+counter);
 		/*	The counter of S is positive 
 		In this case, the counter is decreased by 1 and the thread resumes its execution.*/
 		if (counter>0){
 			counter--;
-	     	System.out.println(rt.time + ": resource "+name+" is taken by " +id);
 			return 10000;
 		} else if (counter==0){
 			/*	The counter of S is zero 
 			In this case, the thread is suspended and put into the private queue of S.*/
-			System.out.println(rt.time + ": " +id+ " waits resource "+name);
 		}
 
 		return -1;

@@ -3,34 +3,22 @@ import java.util.PriorityQueue;
 import java.util.Random;
 
 
-public class FairRunTime {
-	Random rn;
-	Boolean runBoolean=false;
-	static PriorityQueue<ScheduledSample> pq;
-	static ArrayList<Agent> agents;
-	int time;
-	boolean writeroneDone = false;
-	boolean writertwoDone = false;
-	
-	int chpw = 1;
-	int speed = 500;
-	gui gui;
-	FairView rtv;
-	public int somethingtowrite;
+public class FairRunTime extends AbstractRunTime {
+	ArrayList<Agent> agents;
 	int readcount=0; // (initial value = 0)
 	Semaphore mutex_rdcnt, r, w; // ( initial value = 1 ) 
 	public FairRunTime() {
 		time=0;
-		rn = new Random();
 	}
-	public void initRunTime(PriorityQueue<ScheduledSample> pq,ArrayList<Agent> agents, int somethingtowrite){
-		this.pq=pq;
+	public void initRunTime(ArrayList<Agent> agents, gui gui){
+		super.agents=agents;
 		this.agents=agents;
-		this.somethingtowrite=somethingtowrite;
 		mutex_rdcnt =new Semaphore(this,"mutex_rdcnt");
 		r = new Semaphore (this,"r");
 		w = new Semaphore (this,"w");
+		super.gui = gui;
 	}
+//	@Override
 	public void execute(){
 		synchronized(agents){
 		while (time<300){
@@ -43,7 +31,11 @@ public class FairRunTime {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+
 				} 
+				StateClass st = new StateClass(this);
+
+				st.execute();
 				rtv.repaint();
 			}
 		}
@@ -53,8 +45,6 @@ public class FairRunTime {
 	public void step(){
 		time++;
 		for(Agent a:agents){
-			a.setActive();
-			rtv.repaint();
 			a.step(time);
 			try {
 				Thread.sleep(speed);
@@ -62,16 +52,15 @@ public class FairRunTime {
 				e.printStackTrace();
 			}
 		} 
+		StateClass st = new StateClass(this);
+		st.execute();
 		rtv.repaint();
-		System.out.println();System.out.println();
-
+	
 	}
 
 
 
-	public int getTime(){
-		return time;
-	}
+
 
 }
 

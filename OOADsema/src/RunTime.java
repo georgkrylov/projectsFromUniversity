@@ -3,49 +3,56 @@ import java.util.PriorityQueue;
 import java.util.Random;
 
 
-public class RunTime {
+public class RunTime extends AbstractRunTime {
 	Random rn;
-	Boolean runBoolean=false;
+
 	static PriorityQueue<ScheduledSample> pq;
-	static ArrayList<Agent> agents;
-	int time;
-	int chpw = 1;
-	int speed = 500;
-	gui gui;
-	RunTimeView rtv;
+
+
+
+
 	public int somethingtowrite;
 	public RunTime() {
-		time=0;
+		time=-1;
 		rn = new Random();
 	}
-	public void initRunTime(PriorityQueue<ScheduledSample> pq,ArrayList<Agent> agents, int somethingtowrite){
+	
+	public void initRunTime(PriorityQueue<ScheduledSample> pq,ArrayList<Agent> agents, int somethingtowrite,gui gui){
+		super.agents=agents;
+		super.gui = gui;
 		this.pq=pq;
-		this.agents=agents;
-		this.somethingtowrite=somethingtowrite;
 
 	}
 	public void execute(){
-		synchronized(pq){
-			while (pq.size()!=0 ){
-				if (runBoolean==false) {break;}
+		synchronized(agents){
 
-				time++;
-				if (time>=pq.peek().getTimeOfEvent()){
+			while (time<300 ){
+			
+				if (runBoolean==false) {break;}
+				
+				time=pq.peek().getTimeOfEvent();
+				for (int i=0;i<4;i++)states[i]=0;
+				while (time>=pq.peek().getTimeOfEvent()){
 					int i = rn.nextInt(20);
 					pq.peek().agent.setActive();
 					rtv.repaint();
 					pq.poll().step(i);
-					try {
-						Thread.sleep(speed);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				} else {/*System.out.println("Time is: "+time+" nothing happened");*/}
+				
+				} 
+
+				try {
+					Thread.sleep(speed);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				StateClass st = new StateClass(this);
+
+				st.execute();
 				rtv.repaint();
 
-			}}
+			}
+		}
 	}
-
 	public void step(){
 
 		if (pq.size()!=0 ){
@@ -59,15 +66,15 @@ public class RunTime {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		} else {/*System.out.println("Time is: "+time+" nothing happened");*/}
+		} else {	for (int i=0;i<3;i++)states[i]=3;}
+		StateClass st = new StateClass(this);
+		st.execute();
 		rtv.repaint();
 
 	}
 
 
 
-	public int getTime(){
-		return time;
-	}
+
 
 }

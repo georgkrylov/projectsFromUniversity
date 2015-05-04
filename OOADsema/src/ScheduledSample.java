@@ -1,7 +1,7 @@
 
 
 
-public class ScheduledSample implements Comparable {
+public class ScheduledSample implements Steppable, Comparable {
 	int time;
 	Agent agent;
 	ScheduledSample(Agent agent, int time){
@@ -11,12 +11,15 @@ public class ScheduledSample implements Comparable {
 	public int getTimeOfEvent(){
 		return time;
 	}
-	public void step(int i){
-		agent.step(time,i);
-	}
+
 	@Override
 	public int compareTo(Object o) {
 		ScheduledSample otherObject = (ScheduledSample) o;
-		return Math.min(this.time, otherObject.time);
+		return this.time-otherObject.time;
+	}
+	@Override
+	public void step(int i) {
+		agent.step(time,i);
+		
 	}
 }

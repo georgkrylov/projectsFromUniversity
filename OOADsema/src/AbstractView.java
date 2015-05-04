@@ -8,31 +8,38 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
 
+public class AbstractView implements ActionListener{
 
-public class RunTimeView implements ActionListener{
 	static JLabel buffer;
-	RunTime rt;
+	AbstractRunTime rt;
 	gui gui;
-
-	public RunTimeView(RunTime rt,gui gui) {
+	public AbstractView(AbstractRunTime rt,gui gui) {
 		this.rt = rt;
 		this.gui=gui;
 		rt.rtv=this;
 		prepare();
 	}
+
 	public void prepare(){
 		int readerscount = -1;
 		int writerscount = -1;
 		gui.jTextArea1.setText("");
 		gui.jTextArea2.setText("");
-		
 		synchronized(rt.agents){
 			Iterator it =  rt.agents.iterator();
 			while (it.hasNext()){
 				Agent temp = (Agent) it.next();
+				if (temp.getClass()== FairReader.class) {
+					readerscount++;
+					gui.jTextArea1.setText(gui.jTextArea1.getText()+"FairReader "+ Integer.toString(readerscount)+"\n");
+				}
 				if (temp.getClass()== Reader.class) {
 					readerscount++;
 					gui.jTextArea1.setText(gui.jTextArea1.getText()+"Reader "+ Integer.toString(readerscount)+"\n");
+				}
+				if (temp.getClass()== FairWriter.class) {
+					writerscount++;
+					gui.jTextArea2.setText(gui.jTextArea2.getText()+"FairWriter "+ Integer.toString(writerscount)+"\n");
 				}
 				if (temp.getClass()== Writer.class) {
 					writerscount++;
@@ -49,37 +56,62 @@ public class RunTimeView implements ActionListener{
 		}
 	}
 	public void repaint(){
-		gui.jLabel9.setText(Integer.toString(rt.speed));
+		gui.jLabel9.setText(Integer.toString(550-rt.speed));
 		int readerHighlightStart=0;
 		int readerHighlightEnd=0;
 		int writerHighlightStart=0;
 		int writerHiglightEnd=0;
+		//gui.repaint();
 		synchronized(rt.agents){
 			Iterator it =  rt.agents.iterator();
 			int readerscount = -1;
 			int writerscount = -1;
-
+			
 			gui.jTextArea1.setText("");
 			gui.jTextArea2.setText("");
 			gui.jLabel13.setText(Integer.toString(rt.getTime()));
 			while (it.hasNext()){
 				Agent temp = (Agent) it.next();
-				if (temp.getClass()== Reader.class) {
+				if (temp.getClass()== FairReader.class) {
 					readerscount++;
-					Reader readerr = (Reader)temp;
-
+					FairReader readerr = (FairReader)temp;
+					
 					int sizeofArea = gui.jTextArea1.getText().length();
-					String tempString ="Reader "+ Integer.toString(readerscount) +"\n"+readerr.readerString+"\n";
-					//	System.out.println(sizeofArea);
+					String tempString ="FairReader "+ Integer.toString(readerscount) +"\n"+readerr.readerString+"\n";
 					gui.jTextArea1.setText(gui.jTextArea1.getText()+tempString);
 					if (readerr.active) {
 						readerHighlightStart = sizeofArea;
 						readerHighlightEnd = sizeofArea+tempString.length();
 					}
 				}
+				if (temp.getClass()== Reader.class) {
+					readerscount++;
+					Reader readerr = (Reader)temp;
+					
+					int sizeofArea = gui.jTextArea1.getText().length();
+					String tempString ="Reader "+ Integer.toString(readerscount) +"\n"+readerr.readerString+"\n";
+					gui.jTextArea1.setText(gui.jTextArea1.getText()+tempString);
+					if (readerr.active) {
+						readerHighlightStart = sizeofArea;
+						readerHighlightEnd = sizeofArea+tempString.length();
+					}
+				}
+				if (temp.getClass()== FairWriter.class) {
+					writerscount++;
+					FairWriter writerr = (FairWriter)temp;
+					
+					int sizeofArea = gui.jTextArea2.getText().length();
+					String tempString = "FairWriter "+ Integer.toString(writerscount)+"\n"+writerr.jobLeft()+"\n";
+					gui.jTextArea2.setText(gui.jTextArea2.getText()+tempString);
+					if (writerr.active) {
+						writerHighlightStart=sizeofArea;
+						writerHiglightEnd=sizeofArea+tempString.length();
+					}
+				}
 				if (temp.getClass()== Writer.class) {
 					writerscount++;
-					Writer writerr = (Writer)temp;
+					 Writer writerr = ( Writer)temp;
+					
 					int sizeofArea = gui.jTextArea2.getText().length();
 					String tempString = "Writer "+ Integer.toString(writerscount)+"\n"+writerr.jobLeft()+"\n";
 					gui.jTextArea2.setText(gui.jTextArea2.getText()+tempString);
@@ -165,3 +197,4 @@ public class RunTimeView implements ActionListener{
 
 	}
 }
+

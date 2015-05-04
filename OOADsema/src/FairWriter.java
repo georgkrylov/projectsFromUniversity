@@ -5,7 +5,7 @@ public class FairWriter extends Agent {
 	private int pos;
 	private int number;
 	FairRunTime rt;
-	private int state;
+	int state;
 
 	private Buffer buffer;
 	public FairWriter(String writerString,Buffer buffer,int number,FairRunTime rt){
@@ -14,7 +14,7 @@ public class FairWriter extends Agent {
 		this.buffer=buffer;
 		this.number = number;
 		this.rt = rt;
-		state=0;
+		state=5;
 
 	}
 	public void write(){
@@ -27,9 +27,11 @@ public class FairWriter extends Agent {
 
 	public void step(int simTime){
 		//		System.out.println(simTime+"  writer "+number+"writes");
-//		System.out.println(simTime+"writer "+number+" state "+state);
-		if (state == 0 ) {	if ( rt.r.wait("writer "+Integer.toString(number))<=0){ return;} state++;		return;} 
-		if (state == 1 ) {	if (rt.w.wait("writer"+Integer.toString(number))<=0){ return;} state++;		return; } 
+		System.out.println(simTime+"writer "+number+" state "+state);
+		if (state == 5 ) {	if ( rt.r.wait("writer "+Integer.toString(number))<=0){ 			rt.states[2+number]=state;
+ return;} state++;		rt.states[2+number]=state; return;} 
+		if (state == 6 ) {	if (rt.w.wait("writer"+Integer.toString(number))<=0){rt.states[2+number]=state; return;} state++;	rt.states[2+number]=state;	return; } 
+		if (state == 7){
 		this.setActive();
 		rt.rtv.repaint();
     	write();
@@ -43,7 +45,10 @@ public class FairWriter extends Agent {
  
         rt.w.signal();  
         rt.r.signal();
-        state=0;
+        
+        state=5;
+        rt.states[2+number]=state;
+		}
 		// rt.pq.add(new ScheduledSample(this,simTime+4)); else rt.somethingtowrite--;
 	}
 	public String jobLeft(){

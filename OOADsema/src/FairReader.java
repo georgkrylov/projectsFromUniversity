@@ -3,7 +3,7 @@ public class FairReader extends Agent {
 	private Buffer buffer;
 	FairRunTime rt;
 	String readerString;
-	int state;
+	//int state;
 	public FairReader(Buffer buffer,int number,FairRunTime rt){
 		this.buffer=buffer;
 		this.number = number;
@@ -16,19 +16,21 @@ public class FairReader extends Agent {
 		//	System.out.println("Reader "+number +":" + readerString);
 	}
 	public void step(int simTime){
+		
 	//	System.out.println("reader "+number+" state "+state);
 		if (state == 0 ) {if (rt.r.wait("Reader "+Integer.toString(number))<=0) {
 		//	System.out.println("Reader"+number+" waits  r");
 			return; 
 		} 
 		state++;
+		rt.states[number]=state;
 		return;
 		} 
-		if (state == 1 ) {if (rt.mutex_rdcnt.wait("Reader "+Integer.toString(number))<=0){ return;}state++;		return;}
+		if (state == 1 ) {if (rt.mutex_rdcnt.wait("Reader "+Integer.toString(number))<=0){		rt.states[number]=state; return;}state++;			rt.states[number]=state;	return;}
 		if (state == 2) {
 			rt.readcount++;
 			if (rt.readcount == 1)
-				if(rt.w.wait("Reader "+Integer.toString(number))<=0){ return;} state++;		return;}
+				if(rt.w.wait("Reader "+Integer.toString(number))<=0){ 		rt.states[number]=state;return;} state++;			rt.states[number]=state;	return;}
 		if (state ==3) {
 			rt.mutex_rdcnt.signal();          
 			rt.r.signal();
@@ -42,16 +44,17 @@ public class FairReader extends Agent {
 				e.printStackTrace();
 			}
 			this.setInactive(); 
-			if (rt.mutex_rdcnt.wait("Reader "+Integer.toString(number))<=0){ return;} state++;		return;}
+			if (rt.mutex_rdcnt.wait("Reader "+Integer.toString(number))<=0){ 		rt.states[number]=state; return; } state++;			rt.states[number]=state;	return;}
 		if (state ==4){
 			rt.readcount--;
 			if (rt.readcount == 0)
 				rt.w.signal();
 			rt.mutex_rdcnt.signal();  
 
-
 			
-			state=0;		return;
+			state=0;	
+			rt.states[number]=state;
+			return;
 		}
 	}
 }

@@ -15,6 +15,8 @@ public void read(){
 }
 @Override
 public void step(int simTime,int i){
+	rt.states[number]=1;
+	state=1;
 	read();
 	try {
 		Thread.sleep(300);
@@ -23,7 +25,7 @@ public void step(int simTime,int i){
 		e.printStackTrace();
 	}
 	this.setInactive();
-	if (rt.somethingtowrite>0) rt.pq.add(new ScheduledSample(this,simTime+i));
+	if (rt.time<300) rt.pq.add(new ScheduledSample(this,simTime+i));
 }
 }
 

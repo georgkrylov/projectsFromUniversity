@@ -27,6 +27,8 @@ public void write(){
 
 public void step(int simTime,int i){
 //	System.out.println(simTime+"  writer "+number+"writes");
+	rt.states[2+number]=2;
+	state=2;
 	write();
 	try {
 		Thread.sleep(300);
@@ -38,7 +40,6 @@ public void step(int simTime,int i){
 	if (pos<writerString.length()) rt.pq.add(new ScheduledSample(this,simTime+i)); else rt.somethingtowrite--;
 }
 public String jobLeft(){
-//	System.out.println(simTime+"  writer "+number+"writes");
 	return writerString.substring(pos, writerString.length());
 	}
 }
