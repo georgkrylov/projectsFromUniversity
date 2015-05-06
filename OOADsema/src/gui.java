@@ -14,7 +14,7 @@ import java.awt.Dimension;
 public class gui extends javax.swing.JFrame {
 
     /**
-     * Creates new form NewJFrame
+     * this class contains all gui elements. it was imported from netBeans JavaFX project, so it looks like this
      */
     public gui() {
     	this.setPreferredSize(new Dimension(800, 420));

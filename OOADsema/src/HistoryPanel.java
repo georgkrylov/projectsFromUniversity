@@ -12,8 +12,9 @@ class HistoryPanel extends JPanel {
 	private String[] states;
 	private int statecount=0;
 	private Color [] colors ;
+	int agentscount;
 	private int currentTime;
-	private int [] [] StateHistory = new int [300][4];
+	private int [] [] StateHistory;
 	HistoryPanel() {
 		// set a preferred size for the custom panel.
 		setPreferredSize(new Dimension(6000,420));
@@ -22,11 +23,11 @@ class HistoryPanel extends JPanel {
 
 	}
 
+	//This repaints the components and draws name of states
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		super.setBackground(Color.WHITE);
-		//g.setColor (Color.blue); 
 		int offsetx=0;
 		int offsety=0;
 		for (int i=0; i<statecount;i++){
@@ -42,17 +43,18 @@ class HistoryPanel extends JPanel {
 			offsety=textHeight;
 		}
 		for (int i=0;i<Math.min(currentTime, 300);i++){
-			for (int j=0;j<4;j++){
+			for (int j=0;j<agentscount;j++){
 				g.setColor(colors[StateHistory[i][j]]);
 				g.drawRect(20*(i), offsety+20*(j), 20, 20);
 				g.fillRect(20*(i),offsety+20*(j), 20, 20);
 			}
 			g.setColor(Color.black);
-			g.drawString(Integer.toString(i), 20*(i-1),  5+20*(5+1));
+			g.drawString(Integer.toString(i), 20*(i-1),  5+20*(agentscount+1));
 		}
 
 		repaint();
 	}
+	//upon creation you should specify all states. in my design reader states go first
 	public void addState(String s){
 		states[statecount]=s;
 		int R = (int) (Math.random( )*256);
@@ -63,14 +65,17 @@ class HistoryPanel extends JPanel {
 		statecount ++;
 
 	}
-	public void clearStates(){
+	// initialization function
+	public void clearStates(int agentscount){
 		statecount =0;
-		StateHistory = new int [300][4];
+		this.agentscount = agentscount;
+		StateHistory = new int [300][agentscount];
 
 	}
+	// append current state
 	public void appendCurrentState(int simTime,int [] states){
 		currentTime=simTime;
-		StateHistory[simTime]=Arrays.copyOf(states, 4);
+		StateHistory[simTime]=Arrays.copyOf(states, agentscount);
 
 	}
 }

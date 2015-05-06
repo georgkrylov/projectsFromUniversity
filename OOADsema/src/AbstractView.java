@@ -19,7 +19,7 @@ public class AbstractView implements ActionListener{
 		rt.rtv=this;
 		prepare();
 	}
-
+// This is to display initial values
 	public void prepare(){
 		int readerscount = -1;
 		int writerscount = -1;
@@ -55,13 +55,13 @@ public class AbstractView implements ActionListener{
 			}
 		}
 	}
+	// This function is executed each simTime
 	public void repaint(){
 		gui.jLabel9.setText(Integer.toString(550-rt.speed));
 		int readerHighlightStart=0;
 		int readerHighlightEnd=0;
 		int writerHighlightStart=0;
 		int writerHiglightEnd=0;
-		//gui.repaint();
 		synchronized(rt.agents){
 			Iterator it =  rt.agents.iterator();
 			int readerscount = -1;
@@ -150,15 +150,13 @@ public class AbstractView implements ActionListener{
 							writerHiglightEnd,
 							DefaultHighlighter.DefaultPainter);
 				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					//		e.printStackTrace();
 				}
 
 			}
 		}
 
 	}
-
+// ActionListeners for gui control
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -174,12 +172,11 @@ public class AbstractView implements ActionListener{
 			if ((gui.jTextField1.getText().matches(".*\\d+.*"))){
 				int i = 1;
 				i = Integer.parseInt(gui.jTextField1.getText());
-				//	System.out.println(i);
 				rt.chpw = i;
 			}
 		}
-		if (e.getActionCommand()=="Speed up"){if (rt.speed>50){rt.speed-=50;}};
-		if (e.getActionCommand()=="Speed down"){rt.speed+=50; };
+		if (e.getActionCommand()=="Speed up"){if (rt.speed>50){rt.speed-=50;} if (!rt.runBoolean)repaint();};
+		if (e.getActionCommand()=="Speed down"){rt.speed+=50; if (!rt.runBoolean)repaint();};
 		if (e.getActionCommand() == "Play" || e.getActionCommand() == "Pause" ){
 			if (rt.runBoolean==true) {
 				rt.runBoolean=false;

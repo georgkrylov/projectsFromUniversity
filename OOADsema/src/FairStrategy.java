@@ -3,23 +3,35 @@ public class FairStrategy implements SolutionStrategy {
 
 	@Override
 	public void execute(gui gui) {
+// 	Initialization functions
+//	first you have to plug all writers, increasing writerscount
+// then you plug all readers increasing readerscount
+//	then call clear states and later add buffer	
+//		
 		FairRunTime rt = new FairRunTime();
 		agents.clear();
-
+		int writerscount =0;
+		int readerscount =0;
 		pq.clear();
 		Buffer buff = new Buffer(1000);
 		FairWriter writer = new FairWriter("Hello everyone our ",buff,0,rt);
 		agents.add(writer);
-
-		writer = new FairWriter("World is a brilliant thing!",buff,1,rt);
+		writerscount++;
+		writer = new FairWriter("wedasdas",buff,1,rt);
 		agents.add(writer);
-		for (int i = 0; i<2;i++){
+		writer = new FairWriter("World is a brilliant thing!",buff,2,rt);
+		agents.add(writer);
+		writer = new FairWriter("weddaslk mew qke qw das",buff,3,rt);
+		agents.add(writer);
+		for (int i = 0; i<3;i++){
 			FairReader reader = new FairReader(buff,i,rt);
 			agents.add(reader);
-			pq.add(new ScheduledSample(reader,2+i));
+			readerscount++;
 		}
+		rt.readerscount = readerscount;
+		rt.writerscount = writerscount;
+		gui.jPanel8.clearStates(agents.size());
 		agents.add(buff);
-		gui.jPanel8.clearStates();
 		gui.jPanel8.addState("Reader waits for resource R");
 		gui.jPanel8.addState("Reader waits for resource M");
 		gui.jPanel8.addState("Reader waits for resource W");

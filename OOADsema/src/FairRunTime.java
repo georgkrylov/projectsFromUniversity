@@ -15,8 +15,9 @@ public class FairRunTime extends AbstractRunTime {
 		r = new Semaphore (this,"r");
 		w = new Semaphore (this,"w");
 		super.gui = gui;
+		states = new int [agents.size()-1];
 	}
-//	@Override
+	
 	public void execute(){
 		synchronized(agents){
 		while (time<300){
@@ -24,32 +25,35 @@ public class FairRunTime extends AbstractRunTime {
 				time++;
 				for(Agent a:agents){
 					a.step(time);
-			try {
-						Thread.sleep(speed);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+
 
 				} 
+				//Create additional thread to update states.
 				StateClass st = new StateClass(this);
 
 				st.execute();
+				try {
+					Thread.sleep(speed);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				rtv.repaint();
 			}
 		}
 	}
 
-
+// one second more...
 	public void step(){
 		time++;
 		for(Agent a:agents){
 			a.step(time);
-			try {
-				Thread.sleep(speed);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+
 		} 
+		try {
+			Thread.sleep(speed);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		StateClass st = new StateClass(this);
 		st.execute();
 		rtv.repaint();

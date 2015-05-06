@@ -14,15 +14,16 @@ private Buffer buffer;
 
 	 
  }
+ // append to buffer pos+chpw string chpw = CharactersPerWrite
 public void write(int time){
 	if (pos>=writerString.length()){return;}
 	buffer.append(writerString.substring(pos, Math.min(pos+rt.chpw, writerString.length())), time);
 	pos+=rt.chpw;
 	
 }
-
+// do the steo
 public void step(int simTime,int i){
-	rt.states[2+number]=2;
+	rt.states[rt.readerscount+number]=2;
 	state=2;	
 	write(simTime);
 	try {

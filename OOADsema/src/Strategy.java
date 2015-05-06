@@ -1,5 +1,6 @@
 
 public class Strategy {
+	// context class for strategy design pattern
 	SolutionStrategy s;
 	RunTime rt;
 	gui gui;

@@ -1,7 +1,9 @@
 
 
 public class NoStrategy implements SolutionStrategy {
-
+// This one has scheduled samples. it is used to add randomness
+	// See fair strategy for how to create readers
+	
 	@Override
 	public void execute(gui gui) {
 		RunTime rt = new RunTime();
@@ -15,8 +17,12 @@ public class NoStrategy implements SolutionStrategy {
 		agents.add(writer);
 		Somethingtowrite++;
 		pq.add(new ScheduledSample(writer,0));
-
+		int readerscount =0;
 		writer = new Writer("World is a brilliant thing!",buff,1,rt);
+		writer.setState(1);
+		agents.add(writer);
+		pq.add(new ScheduledSample(writer,1));
+		writer = new Writer("Wasdasdthing!",buff,2,rt);
 		writer.setState(1);
 		agents.add(writer);
 		Somethingtowrite++;
@@ -25,11 +31,12 @@ public class NoStrategy implements SolutionStrategy {
 			Reader reader = new Reader(buff,i,rt);
 			reader.setState(0);
 			agents.add(reader);
-
+			readerscount++;
 			pq.add(new ScheduledSample(reader,10*i));
 		}
+		rt.readerscount=readerscount;
+		gui.jPanel8.clearStates(agents.size());
 		agents.add(buff);
-		gui.jPanel8.clearStates();
 		gui.jPanel8.addState("Idle");
 		gui.jPanel8.addState("Reader reads");
 		gui.jPanel8.addState("Writer writes");

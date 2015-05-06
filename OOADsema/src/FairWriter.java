@@ -3,7 +3,7 @@ public class FairWriter extends Agent {
 
 	private String writerString="";
 	private int pos;
-	private int number;
+	private int number; // identification number
 	FairRunTime rt;
 	int state;
 
@@ -17,14 +17,16 @@ public class FairWriter extends Agent {
 		state=5;
 
 	}
+	// appends to buffer from pos to character per Writer;
 	public void write(int time){
 		if (pos>=writerString.length()){}else{
 			buffer.append(writerString.substring(pos, Math.min(pos+rt.chpw, writerString.length())), time);
 			pos+=rt.chpw;}
 	}
-
+// 1st state - wait w 2nd -wait r... for better explanation see FairReader step method comments and fair solution
+// of the problem on wikipedia
 	public void step(int simTime){
-		rt.states[2+number]=state;
+		rt.states[rt.readerscount+number]=state;
 		if (state == 5 ) {	
 			if ( rt.r.wait("writer")<=0){ 
 				rt.states[2+number]=state;
@@ -49,7 +51,6 @@ public class FairWriter extends Agent {
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			this.setInactive();

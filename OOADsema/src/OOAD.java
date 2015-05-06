@@ -8,6 +8,7 @@ public class OOAD {
 	{
 		createGUI();
 	}
+	// You should plug all your strategies here
 	public static void createGUI(){
 		final gui gui = new gui();
 

@@ -7,7 +7,7 @@ public class StepClass extends SwingWorker<Void,Void> {
 	public StepClass(AbstractRunTime rt) {
 		this.rt = rt;
 	}
-	
+	// do a step of RunTime in separate thread
 	@Override
 	protected Void doInBackground() throws Exception {
 		// TODO Auto-generated method stub
