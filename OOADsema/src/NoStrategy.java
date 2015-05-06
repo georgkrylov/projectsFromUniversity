@@ -33,12 +33,9 @@ public class NoStrategy implements SolutionStrategy {
 		gui.jPanel8.addState("Idle");
 		gui.jPanel8.addState("Reader reads");
 		gui.jPanel8.addState("Writer writes");
-
 		rt.initRunTime(pq, agents,Somethingtowrite,gui);
 		AbstractView rtv = new AbstractView(rt,gui);
 		gui.jButton5.addActionListener(rtv);
-
-
 		gui.jButton6.addActionListener(rtv);
 		gui.jButton2.addActionListener(rtv);
 		gui.jButton3.addActionListener(rtv);

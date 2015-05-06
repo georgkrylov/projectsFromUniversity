@@ -1,6 +1,3 @@
-import java.util.Random;
-
-
 public class Writer extends Agent{
 private String writerString="";
 private int pos;
@@ -17,29 +14,26 @@ private Buffer buffer;
 
 	 
  }
-public void write(){
-	for (int i =0;i<rt.chpw;i++){
-	if (pos==writerString.length()){break;}
-	buffer.append(this.writerString.charAt(pos));
-	pos++;}
+public void write(int time){
+	if (pos>=writerString.length()){return;}
+	buffer.append(writerString.substring(pos, Math.min(pos+rt.chpw, writerString.length())), time);
+	pos+=rt.chpw;
 	
 }
 
 public void step(int simTime,int i){
-//	System.out.println(simTime+"  writer "+number+"writes");
 	rt.states[2+number]=2;
-	state=2;
-	write();
+	state=2;	
+	write(simTime);
 	try {
 		Thread.sleep(300);
 	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	this.setInactive();
 	if (pos<writerString.length()) rt.pq.add(new ScheduledSample(this,simTime+i)); else rt.somethingtowrite--;
 }
 public String jobLeft(){
-	return writerString.substring(pos, writerString.length());
+	return writerString.substring(Math.min(pos,writerString.length()), writerString.length());
 	}
 }

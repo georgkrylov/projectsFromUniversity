@@ -8,8 +8,8 @@ String readerString;
 	 this.number = number;
 	 this.rt=rt;
  }
-public void read(){
-	readerString=buffer.read();
+public void read(int simTime){
+	readerString=buffer.read(simTime);
 	
 //	System.out.println("Reader "+number +":" + readerString);
 }
@@ -17,7 +17,7 @@ public void read(){
 public void step(int simTime,int i){
 	rt.states[number]=1;
 	state=1;
-	read();
+	read(simTime);
 	try {
 		Thread.sleep(300);
 	} catch (InterruptedException e) {

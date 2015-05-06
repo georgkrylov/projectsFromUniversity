@@ -10,16 +10,13 @@ public class FairReader extends Agent {
 		this.rt=rt;
 		state=0;
 	}
-	public void read(){
-		readerString=buffer.read();
+	public void read(int simTime){
+		readerString=buffer.read(simTime);
 
-		//	System.out.println("Reader "+number +":" + readerString);
 	}
 	public void step(int simTime){
 		
-	//	System.out.println("reader "+number+" state "+state);
 		if (state == 0 ) {if (rt.r.wait("Reader "+Integer.toString(number))<=0) {
-		//	System.out.println("Reader"+number+" waits  r");
 			return; 
 		} 
 		state++;
@@ -36,7 +33,7 @@ public class FairReader extends Agent {
 			rt.r.signal();
 			this.setActive();
 			rt.rtv.repaint();
-			read();
+			read(simTime);
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {

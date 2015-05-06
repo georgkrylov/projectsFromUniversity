@@ -48,7 +48,7 @@ public class AbstractView implements ActionListener{
 				if (temp.getClass()== Buffer.class) {
 					buffer = gui.jLabel3;
 					Buffer bufferr = (Buffer)temp;
-					buffer.setText(bufferr.read());
+					buffer.setText(bufferr.read(rt.time));
 
 
 				}
@@ -123,7 +123,7 @@ public class AbstractView implements ActionListener{
 				if (temp.getClass()== Buffer.class) {
 					buffer = gui.jLabel3;
 					Buffer bufferr = (Buffer)temp;
-					buffer.setText(bufferr.read());
+					buffer.setText(bufferr.read(rt.time));
 
 
 				}
@@ -179,7 +179,7 @@ public class AbstractView implements ActionListener{
 			}
 		}
 		if (e.getActionCommand()=="Speed up"){if (rt.speed>50){rt.speed-=50;}};
-		if (e.getActionCommand()=="Speed down"){rt.speed+=50;};
+		if (e.getActionCommand()=="Speed down"){rt.speed+=50; };
 		if (e.getActionCommand() == "Play" || e.getActionCommand() == "Pause" ){
 			if (rt.runBoolean==true) {
 				rt.runBoolean=false;
