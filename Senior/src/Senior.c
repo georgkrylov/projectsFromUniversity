@@ -36,7 +36,7 @@ void getMatrix(Gate g, Qbit q){
 				matrix[0] = cos(g.parameter);
 				matrix[1] = -I*sin(g.parameter);
 				matrix[2] = -I*sin(g.parameter);
-				matrix[3] = cos(g.parameter);
+				matrix[3] = cos(g.parameter);s
 				break;
 		case Y:
 				break;
