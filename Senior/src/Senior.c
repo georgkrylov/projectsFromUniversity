@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "kron.h"
+#include "Las.h"
 #include <complex.h>    /* Standard Library of Complex Numbers */
 #define X 0
 #define Y 1
@@ -63,7 +63,7 @@ void generateRotationalMatrix(Gate g, double complex *A, double complex *B, doub
 	}
 
 	Kronecker_CProduct(C,A,nrows,ncols,B,mrows,mcols);
-	}
+}
 void generateInteractionMatrix(Gate g, double complex *A, double complex *B, double complex *C,int nrows,int ncols, int mrows, int mcols)
 {
 
@@ -80,14 +80,14 @@ void generateInteractionMatrix(Gate g, double complex *A, double complex *B, dou
 	}
 
 	for (i = 0 ; i<mrows*mcols;i++){
-			*(B+i)=0;
-		}
+		*(B+i)=0;
+	}
 	for (i = 0 ; i<mrows;i++){
 		B[i*mcols+i]=1;
 	}
 
 	Kronecker_CProduct(C,A,nrows,ncols,B,mrows,mcols);
-	}
+}
 
 
 void getMatrix(Gate g, Qbit q){
@@ -125,20 +125,24 @@ void getMatrix(Gate g, Qbit q){
 		B = (double complex *) malloc(sizeof(double complex) * mrows * mcols);
 		C = (double complex *) malloc(sizeof(double complex) * nrows * ncols * mrows * mcols);
 		generateInteractionMatrix( g, A, B, C, nrows, ncols, mrows,mcols);
-		int i;
-		for (i = 0 ; i<mrows*nrows*ncols*mcols;i++){
-			if (i% (mcols*ncols) == 0)printf("\n");
-			printf("%lf + I * %lf ",creal(*(C+i)),cimag(*(C+i)));
-		}
-		printf("\n");
-
+		printm(C,ncols*mcols,nrows*mrows);
+		transpose(C,nrows*mrows,ncols*mcols);
+		printm(C,ncols*mcols,nrows*mrows);
 	}
 	//indexes differing more than by one mean there should be swap gates
 	if (abs(g.index1-g.index2)>1){
-//TODO implement swap and
+		//TODO implement swap and
 	}
 
+}
+
+void printm( double complex *C, int ncols, int nrows){
+	int i;
+	for (i = 0 ; i<ncols*nrows;i++){
+		if (i% (ncols) == 0)printf("\n");
+		printf("%lf + I * %lf ",creal(*(C+i)),cimag(*(C+i)));
 	}
+	printf("\n");
 }
 
 int main(void) {
