@@ -7,7 +7,7 @@
  Description : Hello World in C, Ansi-style
  ============================================================================
  */
-
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "Las.h"
@@ -125,9 +125,18 @@ void getMatrix(Gate g, Qbit q){
 		B = (double complex *) malloc(sizeof(double complex) * mrows * mcols);
 		C = (double complex *) malloc(sizeof(double complex) * nrows * ncols * mrows * mcols);
 		generateInteractionMatrix( g, A, B, C, nrows, ncols, mrows,mcols);
+		free(A);
+		free(B);
+		A = (double complex *) malloc(sizeof(double complex) * nrows * ncols * mrows * mcols);
+		B = (double complex *) malloc(sizeof(double complex) * nrows * ncols * mrows * mcols);
+		memcpy(A,C,sizeof(double complex) * nrows * ncols * mrows * mcols);
+		memcpy(B,C,sizeof(double complex) * nrows * ncols * mrows * mcols);
+		printm(B,nrows*mrows,ncols*mcols);
+		complexConj(B,nrows*mrows,ncols*mcols);
+		transpose(B,nrows*mrows,ncols*mcols);
+		multiplyC(C,A,nrows*mrows,ncols*mcols,B,nrows*mrows,ncols*mcols);
 		printm(C,ncols*mcols,nrows*mrows);
-		transpose(C,nrows*mrows,ncols*mcols);
-		printm(C,ncols*mcols,nrows*mrows);
+
 	}
 	//indexes differing more than by one mean there should be swap gates
 	if (abs(g.index1-g.index2)>1){
@@ -135,8 +144,13 @@ void getMatrix(Gate g, Qbit q){
 	}
 
 }
+void generateGene(Gate *g, int k){
+	int i = 0;
+	for (i = 0 ; i < k ; i++){
 
-void printm( double complex *C, int ncols, int nrows){
+	}
+}
+void printm( double complex *C, int nrows, int ncols){
 	int i;
 	for (i = 0 ; i<ncols*nrows;i++){
 		if (i% (ncols) == 0)printf("\n");
